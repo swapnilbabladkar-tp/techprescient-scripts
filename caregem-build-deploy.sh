@@ -2,10 +2,10 @@
 
 start=$(date +%s)
 # Get the current commit hash
-current_commit=$(git rev-parse HEAD~13)
+current_commit=$(git rev-parse HEAD)
 
 # Get the previous commit hash
-previous_commit=$(git rev-parse HEAD~14)
+previous_commit=$(git rev-parse HEAD~1)
 
 # Get the list of changed files between the two commits
 changed_files=$(git diff --name-only $previous_commit $current_commit)
@@ -27,7 +27,7 @@ if echo "${chage_service_list[@]}" | grep -q "layers"; then
         template=($service_name/$service_name.yaml)
         echo $template
         # Deploy all functions one-by-one
-: '        echo "----------------------------------------------------"
+        echo "----------------------------------------------------"
         echo "| Status - Building | Function - $function_name "
         echo "----------------------------------------------------"
         sam build -t ./$template --parallel
@@ -47,7 +47,7 @@ if echo "${chage_service_list[@]}" | grep -q "layers"; then
         --no-confirm-changeset --no-fail-on-empty-changeset
         echo "--------------------------------------------------------------"
         echo "| Status - Deployment Completed| Function - $function_name "
-        echo "---------------------------------------------------------------" '
+        echo "---------------------------------------------------------------"
     done
     exit
 elif echo "${chage_service_list[@]}" | egrep -q "service|trigger"; then
@@ -63,7 +63,7 @@ elif echo "${chage_service_list[@]}" | egrep -q "service|trigger"; then
         else
             function_name=$(echo $file | cut -d '/' -f 2)
             # Build the function which is changed
-: '            echo "----------------------------------------------------"
+            echo "----------------------------------------------------"
             echo "| Status - Building | Function - $function_name "
             echo "----------------------------------------------------"
             buildfile=($function_name/$function_name.yaml)
@@ -85,7 +85,7 @@ elif echo "${chage_service_list[@]}" | egrep -q "service|trigger"; then
             --no-confirm-changeset --no-fail-on-empty-changeset
             echo "--------------------------------------------------------------"
             echo "| Status - Deployment Completed| Function - $function_name "
-            echo "---------------------------------------------------------------" '
+            echo "---------------------------------------------------------------" 
         fi
     done
 else
